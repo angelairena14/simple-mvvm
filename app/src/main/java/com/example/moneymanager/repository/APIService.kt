@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface APIService {
     @GET("posts")
-    fun makeRequest(): Observable<List<PostInfo>>
+    fun makeRequest(): Observable<ArrayList<PostInfo>>
 }

@@ -14,7 +14,7 @@ import retrofit2.Retrofit
 import javax.inject.Inject
 
 class RetrofitRepository {
-    var postInfoMutableList : MutableLiveData<List<PostInfo>> = MutableLiveData()
+    var postInfoMutableList : MutableLiveData<ArrayList<PostInfo>> = MutableLiveData()
     @Inject
     lateinit var retrofit : Retrofit
     var disposables = Disposables.empty()
@@ -23,7 +23,7 @@ class RetrofitRepository {
         apiComponent.inject(this)
     }
 
-    fun fetchPostInfoList() : LiveData<List<PostInfo>> {
+    fun fetchPostInfoList() : LiveData<ArrayList<PostInfo>> {
         var apiService : APIService = retrofit.create(APIService::class.java)
         disposables = apiService
             .makeRequest()

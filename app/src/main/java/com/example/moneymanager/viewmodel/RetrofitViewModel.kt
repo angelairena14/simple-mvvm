@@ -9,7 +9,7 @@ import com.example.moneymanager.repository.RetrofitRepository
 
 class RetrofitViewModel (retrofitRepository: RetrofitRepository) : ViewModel(){
     var retrofitRepository: RetrofitRepository = retrofitRepository
-    var postInfoLiveData : LiveData<List<PostInfo>> = MutableLiveData()
+    var postInfoLiveData : LiveData<ArrayList<PostInfo>> = MutableLiveData()
 
     init {
         fetchPostFromRepository()
