@@ -6,7 +6,6 @@ import android.util.Log
 import com.example.moneymanager.BaseApplication
 import com.example.moneymanager.repository.RetrofitRepository
 import com.example.moneymanager.utils.HeaderInterceptor
-import com.example.moneymanager.utils.annotation.ApplicationContext
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

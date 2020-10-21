@@ -1,7 +1,6 @@
 package com.example.moneymanager
 
 import android.content.Context
-import com.example.moneymanager.utils.annotation.ApplicationContext
 import dagger.Module
 import dagger.Provides
 
