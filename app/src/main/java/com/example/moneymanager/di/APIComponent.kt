@@ -2,6 +2,7 @@ package com.example.moneymanager.di
 
 import com.example.moneymanager.AppModule
 import com.example.moneymanager.repository.RetrofitRepository
+import com.example.moneymanager.view.MainActivity
 import com.example.moneymanager.viewmodel.RetrofitViewModel
 import com.example.moneymanager.viewmodel.RetrofitViewModelFactory
 import dagger.Component

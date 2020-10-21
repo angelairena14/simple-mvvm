@@ -26,7 +26,7 @@ class ApiModule constructor(baseUrl : String){
     @Provides
     fun provideOKHttpClient() : OkHttpClient{
         return OkHttpClient.Builder()
-            .addInterceptor(BaseApplication().getContext()?.let { HeaderInterceptor(it) })
+            .addInterceptor(BaseApplication.ctx?.let { HeaderInterceptor(it) })
             .readTimeout(1200,TimeUnit.SECONDS)
             .connectTimeout(1200,TimeUnit.SECONDS)
             .build()

@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.moneymanager.BaseApplication
 import com.example.moneymanager.R
+import com.example.moneymanager.base.BaseActivity
 import com.example.moneymanager.databinding.ActivityMainBinding
 import com.example.moneymanager.model.PostInfo
 import com.example.moneymanager.utils.GeneralObserver
@@ -18,7 +19,7 @@ import com.example.moneymanager.viewmodel.RetrofitViewModel
 import com.example.moneymanager.viewmodel.RetrofitViewModelFactory
 import com.google.gson.Gson
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var retrofitViewModel: RetrofitViewModel
     lateinit var postListAdapter: PostListAdapter

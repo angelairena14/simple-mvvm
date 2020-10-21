@@ -30,12 +30,6 @@ class BaseApplication : Application(){
         return initDaggerComponent()
     }
 
-    fun getContext(): Context? {
-        var context : Context? = null
-        context = ctx
-        return context
-    }
-
     fun initDaggerComponent() : APIComponent{
         return DaggerAPIComponent
             .builder()
