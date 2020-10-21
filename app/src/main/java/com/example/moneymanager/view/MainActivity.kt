@@ -61,8 +61,6 @@ class MainActivity : BaseActivity() {
 
     fun initListener(){
         binding.btnGetToken.setOnClickListener {
-            Log.i("context_is_2","token :${SharedPreferencesUtil.getToken(this)}")
-//            SharedPreferencesUtil.setToken(BaseApplication.get(this).applicationContext,"token")
         }
     }
 }
