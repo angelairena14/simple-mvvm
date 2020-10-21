@@ -7,10 +7,12 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.example.moneymanager.BaseApplication
 import com.example.moneymanager.R
 import com.example.moneymanager.databinding.ActivityMainBinding
 import com.example.moneymanager.model.PostInfo
 import com.example.moneymanager.utils.GeneralObserver
+import com.example.moneymanager.utils.SharedPreferencesUtil
 import com.example.moneymanager.view.adapter.PostListAdapter
 import com.example.moneymanager.viewmodel.RetrofitViewModel
 import com.example.moneymanager.viewmodel.RetrofitViewModelFactory
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         initAdapter()
         setAdapter()
         fetchRetroInfo()
+        initListener()
     }
 
     override fun onDestroy() {
@@ -53,5 +56,12 @@ class MainActivity : AppCompatActivity() {
 
     fun setAdapter (model : ArrayList<PostInfo>){
         postListAdapter.setAdapterList(model)
+    }
+
+    fun initListener(){
+        binding.btnGetToken.setOnClickListener {
+            Log.i("context_is_2","token :${SharedPreferencesUtil.getToken(this)}")
+//            SharedPreferencesUtil.setToken(BaseApplication.get(this).applicationContext,"token")
+        }
     }
 }

@@ -1,6 +1,12 @@
 package com.example.moneymanager.di
 
+import android.app.Application
+import android.content.Context
+import android.util.Log
+import com.example.moneymanager.BaseApplication
 import com.example.moneymanager.repository.RetrofitRepository
+import com.example.moneymanager.utils.HeaderInterceptor
+import com.example.moneymanager.utils.annotation.ApplicationContext
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -13,7 +19,6 @@ import javax.inject.Singleton
 @Module
 class ApiModule constructor(baseUrl : String){
     var baseUrl : String? = ""
-
     init {
         this.baseUrl = baseUrl
     }
@@ -22,6 +27,7 @@ class ApiModule constructor(baseUrl : String){
     @Provides
     fun provideOKHttpClient() : OkHttpClient{
         return OkHttpClient.Builder()
+            .addInterceptor(BaseApplication().getContext()?.let { HeaderInterceptor(it) })
             .readTimeout(1200,TimeUnit.SECONDS)
             .connectTimeout(1200,TimeUnit.SECONDS)
             .build()

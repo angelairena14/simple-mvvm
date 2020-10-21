@@ -1,7 +1,8 @@
 package com.example.moneymanager.repository
 
-class APIURL {
+class Constants {
     companion object {
         const val BASE_URL  = "https://jsonplaceholder.typicode.com/"
+        const val TOKEN = ""
     }
 }
