@@ -9,6 +9,7 @@ import com.example.moneymanager.utils.HeaderInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -25,8 +26,12 @@ class ApiModule constructor(baseUrl : String){
     @Singleton
     @Provides
     fun provideOKHttpClient() : OkHttpClient{
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+
         return OkHttpClient.Builder()
-            .addInterceptor(BaseApplication.ctx?.let { HeaderInterceptor(it) })
+            .addInterceptor(interceptor)
+            .addInterceptor(HeaderInterceptor(BaseApplication.ctx))
             .readTimeout(1200,TimeUnit.SECONDS)
             .connectTimeout(1200,TimeUnit.SECONDS)
             .build()
@@ -41,6 +46,8 @@ class ApiModule constructor(baseUrl : String){
     @Singleton
     @Provides
     fun provideRetrofit(gsonConverterFactory: GsonConverterFactory, okHttpClient: OkHttpClient): Retrofit{
+        val interceptor = HttpLoggingInterceptor()
+
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(gsonConverterFactory)
