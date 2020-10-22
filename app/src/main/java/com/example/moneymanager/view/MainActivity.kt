@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.moneymanager.BaseApplication
+import com.example.moneymanager.BuildConfig
 import com.example.moneymanager.R
 import com.example.moneymanager.base.BaseActivity
 import com.example.moneymanager.databinding.ActivityMainBinding

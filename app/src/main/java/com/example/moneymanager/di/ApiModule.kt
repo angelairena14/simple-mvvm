@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import com.example.moneymanager.BaseApplication
+import com.example.moneymanager.BuildConfig
 import com.example.moneymanager.repository.RetrofitRepository
 import com.example.moneymanager.utils.HeaderInterceptor
 import dagger.Module
@@ -27,7 +28,9 @@ class ApiModule constructor(baseUrl : String){
     @Provides
     fun provideOKHttpClient() : OkHttpClient{
         val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        if (BuildConfig.DEBUG){
+            interceptor.level = HttpLoggingInterceptor.Level.BODY
+        }
 
         return OkHttpClient.Builder()
             .addInterceptor(interceptor)
@@ -46,8 +49,6 @@ class ApiModule constructor(baseUrl : String){
     @Singleton
     @Provides
     fun provideRetrofit(gsonConverterFactory: GsonConverterFactory, okHttpClient: OkHttpClient): Retrofit{
-        val interceptor = HttpLoggingInterceptor()
-
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(gsonConverterFactory)

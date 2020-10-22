@@ -9,6 +9,14 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
 }
 android {
+    signingConfigs {
+        config {
+            storeFile file('D:\\keystore\\money-manager-debug.keystore')
+            storePassword 'moneymanager'
+            keyAlias = 'moneymanager'
+            keyPassword 'moneymanager'
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
     defaultConfig {
@@ -22,8 +30,16 @@ android {
     }
     buildTypes {
         release {
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            debuggable true
+            minifyEnabled false
+            signingConfig signingConfigs.config
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     dataBinding {
