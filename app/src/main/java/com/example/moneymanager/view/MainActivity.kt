@@ -1,20 +1,19 @@
 package com.example.moneymanager.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.moneymanager.BaseApplication
-import com.example.moneymanager.BuildConfig
+import com.ethanhua.skeleton.RecyclerViewSkeletonScreen
+import com.ethanhua.skeleton.Skeleton
 import com.example.moneymanager.R
 import com.example.moneymanager.base.BaseActivity
 import com.example.moneymanager.databinding.ActivityMainBinding
 import com.example.moneymanager.model.PostInfo
+import com.example.moneymanager.repository.RetrofitState
+import com.example.moneymanager.repository.CreatePost
 import com.example.moneymanager.utils.GeneralObserver
-import com.example.moneymanager.utils.SharedPreferencesUtil
 import com.example.moneymanager.view.adapter.PostListAdapter
 import com.example.moneymanager.viewmodel.RetrofitViewModel
 import com.example.moneymanager.viewmodel.RetrofitViewModelFactory
@@ -24,11 +23,13 @@ class MainActivity : BaseActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var retrofitViewModel: RetrofitViewModel
     lateinit var postListAdapter: PostListAdapter
+    private var skeletonScreen: RecyclerViewSkeletonScreen? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        initSkeleton()
         initViewModel()
-        initAdapter()
         setAdapter()
         fetchRetroInfo()
         initListener()
@@ -53,7 +54,10 @@ class MainActivity : BaseActivity() {
     }
 
     fun fetchRetroInfo(){
-        retrofitViewModel.postInfoLiveData.observe(this, GeneralObserver(::setAdapter))
+        retrofitViewModel.fetchPostFromRepository().observe(this, GeneralObserver(::setAdapter))
+        retrofitViewModel.retrofitRepository.getUiState().observer(this, Observer {
+            handleState(it)
+        })
     }
 
     fun setAdapter (model : ArrayList<PostInfo>){
@@ -62,6 +66,49 @@ class MainActivity : BaseActivity() {
 
     fun initListener(){
         binding.btnGetToken.setOnClickListener {
+            retrofitViewModel.createPost("POST TITLE","POS SUBTITLE").observe(
+                this,
+                GeneralObserver(::resultPost)
+            )
         }
+    }
+
+    fun resultPost(createPost : CreatePost){
+        Log.i("createpost",Gson().toJson(createPost))
+    }
+
+    fun handleState(it : RetrofitState){
+        when(it) {
+            is RetrofitState.Error -> {
+                isLoading(false)
+            }
+            is RetrofitState.Success -> {
+                isLoading(false)
+            }
+
+            is RetrofitState.Loading -> isLoading(it.state)
+        }
+    }
+
+    fun isLoading(state: Boolean){
+        if (state){
+            skeletonScreen?.show()
+        } else {
+            skeletonScreen?.hide()
+        }
+    }
+
+    fun initSkeleton(){
+        initAdapter()
+        skeletonScreen = Skeleton.bind(binding.rvPostList)
+            .adapter(postListAdapter)
+            .shimmer(true)
+            .frozen(false)
+            .color(R.color.whitePure)
+            .duration(1500)
+            .count(10)
+            .load(R.layout.item_post_skeleton)
+            .show()
+        skeletonScreen?.show()
     }
 }
