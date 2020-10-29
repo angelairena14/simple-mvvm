@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.moneymanager.BaseApplication
 import com.example.moneymanager.di.APIComponent
 import com.example.moneymanager.model.PostInfo
+import com.example.moneymanager.utils.RxBus
 import com.example.moneymanager.utils.SingleLiveEvent
+import com.example.moneymanager.utils.busmodel.ConnectionBus
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
@@ -44,6 +46,7 @@ class RetrofitRepository {
     }
 
     fun createPost(title :String, subtitle : String) : LiveData<CreatePost> {
+        state.value = RetrofitState.Loading(true)
         createPostList.value = CreatePost(title,subtitle)
         return createPostList
     }

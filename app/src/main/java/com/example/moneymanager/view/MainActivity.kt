@@ -14,6 +14,8 @@ import com.example.moneymanager.model.PostInfo
 import com.example.moneymanager.repository.RetrofitState
 import com.example.moneymanager.repository.CreatePost
 import com.example.moneymanager.utils.GeneralObserver
+import com.example.moneymanager.utils.RxBus
+import com.example.moneymanager.utils.busmodel.ConnectionBus
 import com.example.moneymanager.view.adapter.PostListAdapter
 import com.example.moneymanager.viewmodel.RetrofitViewModel
 import com.example.moneymanager.viewmodel.RetrofitViewModelFactory
@@ -55,9 +57,7 @@ class MainActivity : BaseActivity() {
 
     fun fetchRetroInfo(){
         retrofitViewModel.fetchPostFromRepository().observe(this, GeneralObserver(::setAdapter))
-        retrofitViewModel.retrofitRepository.getUiState().observer(this, Observer {
-            handleState(it)
-        })
+        handlingState()
     }
 
     fun setAdapter (model : ArrayList<PostInfo>){
@@ -70,6 +70,7 @@ class MainActivity : BaseActivity() {
                 this,
                 GeneralObserver(::resultPost)
             )
+            handlingState()
         }
     }
 
@@ -80,7 +81,8 @@ class MainActivity : BaseActivity() {
     fun handleState(it : RetrofitState){
         when(it) {
             is RetrofitState.Error -> {
-                isLoading(false)
+                isLoading(true)
+                RxBus.publish(ConnectionBus(isOnline()))
             }
             is RetrofitState.Success -> {
                 isLoading(false)
@@ -100,6 +102,7 @@ class MainActivity : BaseActivity() {
 
     fun initSkeleton(){
         initAdapter()
+        Log.i("called_","skeleton called")
         skeletonScreen = Skeleton.bind(binding.rvPostList)
             .adapter(postListAdapter)
             .shimmer(true)
@@ -110,5 +113,11 @@ class MainActivity : BaseActivity() {
             .load(R.layout.item_post_skeleton)
             .show()
         skeletonScreen?.show()
+    }
+
+    fun handlingState(){
+        retrofitViewModel.retrofitRepository.getUiState().observer(this, Observer {
+            handleState(it)
+        })
     }
 }

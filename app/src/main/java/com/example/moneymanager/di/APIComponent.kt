@@ -12,6 +12,5 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class,ApiModule::class])
 interface APIComponent {
     fun inject(retrofitRepository: RetrofitRepository)
-    fun inject(retrofitViewModel: RetrofitViewModel)
     fun inject(retrofitViewModelFactory: RetrofitViewModelFactory)
 }
