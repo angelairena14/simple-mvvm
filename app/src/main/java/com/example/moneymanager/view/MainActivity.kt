@@ -82,7 +82,7 @@ class MainActivity : BaseActivity() {
         when(it) {
             is RetrofitState.Error -> {
                 isLoading(true)
-                RxBus.publish(ConnectionBus(isOnline()))
+
             }
             is RetrofitState.Success -> {
                 isLoading(false)
